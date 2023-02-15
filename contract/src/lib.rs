@@ -14,9 +14,6 @@ pub type WrappedBalance = U128;
 mod datastructures;
 mod taskset;
 
-#[global_allocator]
-static ALLOC: near_sdk::wee_alloc::WeeAlloc = near_sdk::wee_alloc::WeeAlloc::INIT;
-
 #[derive(BorshDeserialize, BorshSerialize, Default)]
 pub struct AccountStats {
     balance: Balance,
