@@ -778,11 +778,11 @@ mod tests {
         .collect::<Vec<_>>();
 
         let accounts: Vec<AccountId> = vec![
-            "test0".to_string(),
-            "test1".to_string(),
-            "test2".to_string(),
-            "test3".to_string(),
-            "test4".to_string(),
+            "test0".parse().unwrap(),
+            "test1".parse().unwrap(),
+            "test2".parse().unwrap(),
+            "test3".parse().unwrap(),
+            "test4".parse().unwrap(),
         ];
 
         let mut taskset = TaskSet::new(b"moo".as_ref(), 0, 0, MTASKS_PER_SECOND);
