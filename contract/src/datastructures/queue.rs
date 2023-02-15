@@ -1,8 +1,12 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::Vector;
 use near_sdk::env;
+use std::str;
 
-const ERR: &[u8] = b"Error on deque";
+const ERR_BYTES: &[u8] = b"Error on deque";
+const ERR: &str = unsafe {
+    str::from_utf8_unchecked(ERR_BYTES)
+};
 
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Queue<T> {
@@ -54,14 +58,15 @@ where
             let raw_last_value = if env::storage_remove(&lookup_key) {
                 match env::storage_get_evicted() {
                     Some(x) => x,
-                    None => env::panic(ERR),
+                    None => env::panic_str(ERR),
                 }
             } else {
-                env::panic(ERR)
+                
+                env::panic_str(ERR)
             };
             let ret = match T::try_from_slice(&raw_last_value) {
                 Ok(x) => x,
-                Err(_) => env::panic(ERR),
+                Err(_) => env::panic_str(ERR),
             };
             Some(ret)
         }
@@ -71,12 +76,10 @@ where
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use near_sdk::test_utils::test_env;
+    use super::*;    
 
     #[test]
-    fn test_queue_sanity() {
-        test_env::setup();
+    fn test_queue_sanity() {    
         let mut q: Queue<u64> = Queue::new(vec![b'a']);
 
         assert_eq!(q.dequeue(), None);

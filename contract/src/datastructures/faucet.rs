@@ -83,8 +83,7 @@ mod tests {
     use near_sdk::test_utils::test_env;
 
     #[test]
-    fn test_faucet_prices() {
-        test_env::setup();
+    fn test_faucet_prices() {        
 
         const NEARCENT: Balance = 10_000_000_000_000_000_000_000;
         const MAX_PRICE: Balance = 500 * NEARCENT;

@@ -658,8 +658,7 @@ impl TaskSet {
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use near_sdk::test_utils::test_env;
+    use super::*;    
 
     #[derive(PartialEq, Eq)]
     enum SanityTestFailure {
@@ -758,8 +757,6 @@ mod tests {
     fn test_tasks_sanity_internal(fail_at: SanityTestFailure) {
         const MTASKS_PER_SECOND: u64 = 100; // 1 task every 10 seconds
         const NEARCENT: Balance = 1_000_000_000_000_000_000_000_000 / 100;
-
-        test_env::setup();
 
         let tasks = vec![
             (false, vec![0u8; 8]),
