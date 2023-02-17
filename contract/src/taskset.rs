@@ -779,7 +779,7 @@ mod tests {
         })
         .collect::<Vec<_>>();
         println!("tasks");
-        println!("{:?}", tasks);
+        println!("{:#?}", tasks);
         
         let wine:AccountId = "djwine.near".parse().unwrap();
         print!("{}", wine);
@@ -791,27 +791,27 @@ mod tests {
             "test4".parse().unwrap(),            
         ];
         println!("accounts");
-        println!("{:?}", accounts);        
+        println!("{:#?}", accounts);        
                 
         let mut taskset = TaskSet::new(b"moo".as_ref(), 0, 0, MTASKS_PER_SECOND);
         println!("taskset");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         println!("====================================================================================");
         accounts.iter().for_each(|x| taskset.register_account(x));
         println!("taskset after register_account");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         // Add the first two tasks
         taskset.add_tasks(tasks.iter().take(2).map(|x| x.2.clone()).collect());
 
         println!("taskset after add_tasks");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // Apply for an assignment
         taskset.apply_for_assignment(&accounts[0], 0, 20 * NEARCENT);
 
         println!("taskset after apply_for_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // Make sure it is instantly given
         assert_eq!(
             taskset.account_states.get(&accounts[0]).unwrap(),
@@ -838,7 +838,7 @@ mod tests {
         }
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // The second account shouldn't have an assignment yet
         assert!(taskset.get_current_assignment(&accounts[1]).is_none());
         assert_eq!(
@@ -846,14 +846,14 @@ mod tests {
             AccountState::Idle
         );
         println!("taskset after get_current_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // The first should. Also run some sanity checks on it
         let assignment = taskset.get_current_assignment(&accounts[0]).unwrap();
         assert_eq!(assignment.ordinal, 0);
         assert_eq!(assignment.task_hash, tasks[0].2);
         assert_eq!(taskset.unassigned_tasks.peek_front().unwrap(), tasks[1].2);
         println!("assignment");
-        println!("{:?}", assignment);
+        println!("{:#?}", assignment);
         println!("good to hjere");
         println!("====================================================================================");
         assert_eq!(
@@ -887,7 +887,7 @@ mod tests {
             20 * NEARCENT,
         );
         println!("taskset after submit_solution");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_task_review_state(&tasks[0].2),
             TaskReviewState::NotReviewed
@@ -906,7 +906,7 @@ mod tests {
 
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // If `allow_instant` is true, the solution must be accepted even if not enough time has
         // passed
         taskset.submit_solution(
@@ -917,7 +917,7 @@ mod tests {
             20 * NEARCENT,
         );
         println!("taskset after submit_solution");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_task_review_state(&tasks[1].2),
             TaskReviewState::NotReviewed
@@ -926,13 +926,13 @@ mod tests {
         // Apply for an assignment for the second account
         taskset.apply_for_assignment(&accounts[1], now, 21 * NEARCENT);
         println!("taskset after apply_for_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // The next assignment must be a review. Make sure the original submitter cannot apply for
         // it!
         now += 100_000_000_000;
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert!(taskset.get_current_assignment(&accounts[0]).is_none());
         // This should also have removed the account
         assert_eq!(
@@ -943,16 +943,16 @@ mod tests {
         println!("Reintroduce them");
         taskset.register_account(&accounts[0]);        
         println!("taskset after register_account");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         taskset.apply_for_assignment(&accounts[0], 0, 20 * NEARCENT);
         println!("taskset after apply_for_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         // Assign a review to the second account
         now += 50_000_000;
         taskset.claim_assignment(&accounts[1], now, [0; 2], 21 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_current_assignment(&accounts[1]).unwrap(),
             Assignment {
@@ -971,7 +971,7 @@ mod tests {
             21 * NEARCENT,
         );
         println!("taskset after submit_review");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         assert_eq!(
             taskset.get_task_review_state(&tasks[0].2),
@@ -982,7 +982,7 @@ mod tests {
         // Get another review
         taskset.claim_assignment(&accounts[1], now, [0; 2], 21 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_current_assignment(&accounts[1]).unwrap(),
             Assignment {
@@ -999,7 +999,7 @@ mod tests {
             21 * NEARCENT,
         );
         println!("taskset after submit_review");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_task_review_state(&tasks[1].2),
             TaskReviewState::PendingFinalization(true)
@@ -1072,7 +1072,7 @@ mod tests {
         now += 1;
         taskset.challenge(false, b"moo".to_vec(), tasks[0].1.clone(), now);
         println!("taskset after challenge");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_task_review_state(&tasks[0].2),
             TaskReviewState::Challenged
@@ -1087,7 +1087,7 @@ mod tests {
         for i in 2..5 {            
             taskset.apply_for_assignment(&accounts[i], now, (20 + i as u128) * NEARCENT);
             println!("taskset after apply_for_assignment: account_id = {}", accounts[i]);
-            println!("{:?}", taskset);
+            println!("{:#?}", taskset);
         }
         now += 300_000_000_000;
 
@@ -1174,14 +1174,14 @@ mod tests {
         // Add the next two tasks, that are honeypots
         taskset.add_tasks(tasks.iter().skip(2).take(2).map(|x| x.2.clone()).collect());
         println!("taskset after add_tasks");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // Claim the assignment
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         let assignment = taskset.get_current_assignment(&accounts[0]).unwrap();
         println!("assignment");
-        println!("{:?}", assignment);
+        println!("{:#?}", assignment);
         assert_eq!(assignment.ordinal, 0);
         assert_eq!(assignment.task_hash, tasks[2].2);
         assert_eq!(taskset.unassigned_tasks.peek_front().unwrap(), tasks[3].2);
@@ -1195,13 +1195,13 @@ mod tests {
             20 * NEARCENT,
         );
         println!("taskset after submit_solution");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         // Claim a new assignment and submit a solution
         now += 100_000_000_000;
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
         println!("taskset after claim_assignment");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
 
         taskset.submit_solution(
             accounts[0].clone(),
@@ -1211,9 +1211,11 @@ mod tests {
             20 * NEARCENT,
         );
         println!("taskset after submit_solution");
-        println!("{:?}", taskset);
+        println!("{:#?}", taskset);
         // Assign a review to the second account
         taskset.claim_assignment(&accounts[1], now, [0; 2], 21 * NEARCENT);
+        println!("taskset after claim_assignment");
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_current_assignment(&accounts[1]).unwrap(),
             Assignment {
@@ -1231,9 +1233,13 @@ mod tests {
             now,
             21 * NEARCENT,
         );
+        println!("taskset after submit_review");
+        println!("{:#?}", taskset);
         now += 300_000_000_000;
         // Get another review
         taskset.claim_assignment(&accounts[1], now, [0; 2], 21 * NEARCENT);
+        println!("taskset after claim_assignment");
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_current_assignment(&accounts[1]).unwrap(),
             Assignment {
@@ -1249,6 +1255,8 @@ mod tests {
             now,
             21 * NEARCENT,
         );
+        println!("taskset after submit_review");
+        println!("{:#?}", taskset);
 
         if fail_at == SanityTestFailure::PartialCreditForRejected {
             let _ = taskset.honeypot_partial_credit(accounts[1].clone(), &tasks[3].2);
@@ -1292,7 +1300,8 @@ mod tests {
         // Challenge the accepted honeypot
         now += TIMEOUT_BEFORE_CHALLENGE;
         taskset.challenge(true, b"moo".to_vec(), tasks[2].1.clone(), now);
-
+        println!("taskset after challenge");
+        println!("{:#?}", taskset);
         // Carry out the challenge process
         now += 1_000_000_000;
 
@@ -1300,7 +1309,8 @@ mod tests {
         // assignment
         for i in 0..3 {
             taskset.claim_assignment(&accounts[i], now, [0; 2], (20 + i as u128) * NEARCENT);
-
+            println!("taskset after claim_assignment");
+            println!("{:#?}", taskset);
             if i < 2 {
                 assert!(taskset.get_current_assignment(&accounts[i]).is_none());
                 // This should also have removed the account
@@ -1394,8 +1404,12 @@ mod tests {
 
         // Claim the assignment
         taskset.claim_assignment(&accounts[0], now, [0; 2], 20 * NEARCENT);
-
+        println!("taskset after claim_assignment");
+        println!("{:#?}", taskset);
+        
         let assignment = taskset.get_current_assignment(&accounts[0]).unwrap();
+        println!("assignment");
+        println!("{:#?}", assignment);
         assert_eq!(assignment.ordinal, 0);
         assert_eq!(assignment.task_hash, tasks[2].2);
         assert_eq!(taskset.unassigned_tasks.peek_front(), None);
@@ -1408,10 +1422,13 @@ mod tests {
             now,
             20 * NEARCENT,
         );
-
+        println!("taskset after submit_solution");
+        println!("{:#?}", taskset);
         // Assign a review to the second account
         now += 100_000_000_000;
         taskset.claim_assignment(&accounts[1], now, [0; 2], 21 * NEARCENT);
+        println!("taskset after claim_assignment");
+        println!("{:#?}", taskset);
         assert_eq!(
             taskset.get_current_assignment(&accounts[1]).unwrap(),
             Assignment {
@@ -1427,7 +1444,8 @@ mod tests {
             now,
             21 * NEARCENT,
         );
-
+        println!("taskset after submit_review");
+        println!("{:#?}", taskset);
         // Reconsider
         assert_eq!(
             taskset.honeypot_partial_credit(accounts[1].clone(), &tasks[2].2),
