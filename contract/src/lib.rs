@@ -83,7 +83,7 @@ impl Drop for PersistentTaskSet {
 }
 
 #[near_bindgen]
-#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
+#[derive(BorshDeserialize, BorshSerialize, PanicOnDefault, Debug)]
 pub struct NearCrowdContract {
     admin_id: AccountId,
 }
@@ -93,9 +93,10 @@ impl NearCrowdContract {
     #[init]
     pub fn new() -> Self {
         assert!(!env::state_exists(), "Already initialized");
+        println!("Contract initializing");
         Self {
             admin_id: env::predecessor_account_id(),
-        }
+        }        
     }
 
     pub fn claim_reward() {

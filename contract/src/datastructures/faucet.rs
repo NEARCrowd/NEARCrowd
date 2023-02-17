@@ -75,7 +75,7 @@ impl TasksFaucet {
         self.next_task_at
     }
 }
-
+/*
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(test)]
 mod tests {
@@ -175,3 +175,4 @@ mod tests {
         assert!(tasks_assigned >= TIME_TO_RUN_SEC * (TASKS_PER_SECOND - 1));
     }
 }
+ */

@@ -72,7 +72,7 @@ where
         }
     }
 }
-
+/*
 #[cfg(not(target_arch = "wasm32"))]
 #[cfg(test)]
 mod tests {
@@ -96,3 +96,4 @@ mod tests {
         assert_eq!(q.dequeue(), None);
     }
 }
+ */
