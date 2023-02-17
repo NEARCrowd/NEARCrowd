@@ -8,8 +8,8 @@ const ERR: &str = unsafe {
     str::from_utf8_unchecked(ERR_BYTES)
 };
 
-#[derive(BorshDeserialize, BorshSerialize)]
-pub struct Queue<T> {
+#[derive(BorshDeserialize, BorshSerialize, Debug)]
+pub struct Queue<T: near_sdk::borsh::BorshDeserialize> {
     left: u64,
     prefix: Vec<u8>,
     v: Vector<T>,

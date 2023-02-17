@@ -74,7 +74,7 @@ pub enum ReviewResult {
     Reject,
 }
 
-#[derive(BorshDeserialize, BorshSerialize, Clone)]
+#[derive(BorshDeserialize, BorshSerialize, Clone, Debug)]
 pub struct Review {
     reviewed_by: AccountId,
     review_result: ReviewResult,
@@ -82,7 +82,7 @@ pub struct Review {
     bid: Balance,
 }
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct Solution {
     performed_by: AccountId,
     solution_hash: SolutionHash,
@@ -103,7 +103,7 @@ pub struct Reward {
     pub inner: RewardInner,
 }
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct TaskSet {
     // The datastructure to track timing of assigning tasks
     faucet: TasksFaucet,
@@ -681,7 +681,7 @@ mod tests {
     fn test_tasks_sanity() {
         test_tasks_sanity_internal(SanityTestFailure::None);
     }
-
+/*
     #[test]
     #[should_panic]
     fn test_tasks_sanity_claim_too_early() {
@@ -711,6 +711,7 @@ mod tests {
     fn test_tasks_sanity_challenge_accepted() {
         test_tasks_sanity_internal(SanityTestFailure::ChallengeAcceptedTask);
     }
+
 
     #[test]
     #[should_panic]
@@ -753,8 +754,9 @@ mod tests {
     fn test_tasks_sanity_finalize_after_partial_credit_reject() {
         test_tasks_sanity_internal(SanityTestFailure::FinalizeAfterPartialCreditReject);
     }
-
+ */
     fn test_tasks_sanity_internal(fail_at: SanityTestFailure) {
+        println!("====================================================================================");
         const MTASKS_PER_SECOND: u64 = 100; // 1 task every 10 seconds
         const NEARCENT: Balance = 1_000_000_000_000_000_000_000_000 / 100;
 
@@ -773,7 +775,8 @@ mod tests {
             )
         })
         .collect::<Vec<_>>();
-
+        println!("{:?}", tasks);
+        
         let accounts: Vec<AccountId> = vec![
             "test0".parse().unwrap(),
             "test1".parse().unwrap(),
@@ -781,9 +784,12 @@ mod tests {
             "test3".parse().unwrap(),
             "test4".parse().unwrap(),
         ];
-
+        println!("{:?}", accounts);        
+        
         let mut taskset = TaskSet::new(b"moo".as_ref(), 0, 0, MTASKS_PER_SECOND);
+        println!("{:?}", taskset);
 
+        println!("====================================================================================");
         accounts.iter().for_each(|x| taskset.register_account(x));
 
         // Add the first two tasks

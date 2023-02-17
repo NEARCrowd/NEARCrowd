@@ -6,7 +6,7 @@ const PRICE_CHANGE_UP: Balance = 1_005;
 const PRICE_CHANGE_DOWN: Balance = 995;
 const PRICE_CHANGE_DENOM: Balance = 1_000;
 
-#[derive(BorshDeserialize, BorshSerialize)]
+#[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct TasksFaucet {
     max_price: Balance,
     min_price: Balance,
