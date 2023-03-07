@@ -824,7 +824,7 @@ mod tests {
         println!("{}", "// accounts".color(Colors::BrightGreenFg));
         println!("{:?}", accounts);
                 
-        let mut taskset = TaskSet::new(b"moo".as_ref(), 0, 0, MTASKS_PER_SECOND);
+        let mut taskset = TaskSet::new(b"moo".as_ref(), 10, 0, MTASKS_PER_SECOND);
         println!("");
         println!("");
         println!("{}", "// taskset has been initialized:".color(Colors::BrightGreenFg));    
