@@ -8,11 +8,11 @@ const PRICE_CHANGE_DENOM: Balance = 1_000;
 
 #[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct TasksFaucet {
-    max_price: Balance,
-    min_price: Balance,
-    mtasks_per_second: u64,
-    cur_price: Balance,
-    next_task_at: u64,
+    pub max_price: Balance,
+    pub min_price: Balance,
+    pub mtasks_per_second: u64,
+    pub cur_price: Balance,
+    pub next_task_at: u64,
 }
 
 impl TasksFaucet {

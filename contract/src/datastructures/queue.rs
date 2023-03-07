@@ -10,9 +10,9 @@ const ERR: &str = unsafe {
 
 #[derive(BorshDeserialize, BorshSerialize, Debug)]
 pub struct Queue<T: near_sdk::borsh::BorshDeserialize> {
-    left: u64,
-    prefix: Vec<u8>,
-    v: Vector<T>,
+    pub left: u64,
+    pub prefix: Vec<u8>,
+    pub v: Vector<T>,
 }
 
 impl<T> Queue<T>

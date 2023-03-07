@@ -410,6 +410,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "colorized"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "739281952453521b532f476b5f8b77c4b16d5ab2a248466c8dc153b3f85d6564"
+
+[[package]]
 name = "convert_case"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1489,6 +1495,7 @@ dependencies = [
 name = "nearcrowd"
 version = "0.1.0"
 dependencies = [
+ "colorized",
  "env_logger",
  "lazy_static",
  "log",
