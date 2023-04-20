@@ -86,6 +86,7 @@ impl Drop for PersistentTaskSet {
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
 pub struct NearCrowdContract {
     admin_id: AccountId,
+    taskset_count: u32,
 }
 
 #[near_bindgen]
@@ -137,6 +138,13 @@ impl NearCrowdContract {
 
         let mut collection: LookupMap<u32, TaskSet> = LookupMap::new(b"p".to_vec());
         collection.insert(&ordinal, &taskset);
+
+        // Increment the taskset counter
+        self.taskset_count += 1;
+    }
+
+    pub fn get_number_of_tasksets(&self) -> u32 {
+        self.taskset_count
     }
 
     pub fn update_taskset_prices(
@@ -156,6 +164,14 @@ impl NearCrowdContract {
         PersistentTaskSet::new(task_ordinal, false)
             .taskset
             .update_mtasks_per_second(mtasks_per_second.into());
+    }
+
+    pub fn get_taskset_info(&self, ordinal: u32) -> TaskSet {
+        let taskset_collection: LookupMap<u32, TaskSet> = LookupMap::new(b"p".to_vec());
+        match taskset_collection.get(&ordinal) {
+            Some(taskset) => taskset,
+            None => env::panic(b"TaskSet not found"),
+        }
     }
 
     pub fn whitelist_account(&mut self, account_id: &AccountId) {
